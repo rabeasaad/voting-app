@@ -29,4 +29,4 @@ jobs:
             - name: Deploy Worker service
               run: |
                   kubectl apply -f k8s-specifications/worker/
-                  kubectl rollout status deployment worker-deployment
+                  kubectl rollout status deployment worker
