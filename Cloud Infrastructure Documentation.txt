@@ -1,0 +1,125 @@
+===============================
+Voting App – Azure Cloud-Native Deployment Documentation
+===============================
+
+1- Project Overview
+-------------------
+- Project Name: Voting App
+- Description: A simple voting application with a web frontend, backend API, and database.
+- Tools Used: Azure, Terraform, AKS, ACR, GitHub Actions.
+
+-------------------
+2- Project Architecture
+-------------------
++-------------------+----------------------------+--------------------------------------------------+
+| Component         | Type / Technology         | Role                                             |
++-------------------+----------------------------+--------------------------------------------------+
+| Frontend          | Web Application           | User interface for casting votes and results   |
+| Backend           | API Server                | Handles requests and communicates with DB      |
+| Database          | PostgreSQL / DBaaS        | Stores votes and application data              |
+| Container         | Docker                     | Runs the app in containers for portability    |
+| Orchestration     | Kubernetes (AKS)          | Manages and deploys containers with scaling   |
+| Container Registry| Azure Container Registry   | Stores container images ready for deployment  |
++-------------------+----------------------------+--------------------------------------------------+
+
+-------------------
+3️-  Azure Cloud Infrastructure
+-------------------
+
+3.1 Azure Kubernetes Service (AKS)
+- Deployed a Kubernetes cluster to run all app components as containers.
+- Used Namespaces, Deployments, and Services for organization.
+- Added Ingress Controller / LoadBalancer for browser access.
+
+3.2 Azure Container Registry (ACR)
+- All Docker images pushed to ACR for AKS deployment.
+- AKS pulls images automatically when deploying Pods.
+
+3.3 Database
+- PostgreSQL as DBaaS or within Kubernetes Pod.
+- Connected using Secrets and ConfigMaps for secure credentials.
+
+-------------------
+4️- Infrastructure as Code (IaC)
+-------------------
+
+4.1 IaC Tools
+- Used Terraform to provision all infrastructure.
+- Deploy all resources with a single command:
+
+    terraform apply
+
+4.2 IaC Components
++----------------+--------------------------------------------------+
+| Resource       | Description                                      |
++----------------+--------------------------------------------------+
+| Resource Group | Groups all Azure resources                        |
+| AKS Cluster    | Runs Kubernetes to orchestrate containers       |
+| ACR            | Stores container images                          |
+| PostgreSQL DB  | Database for the application                     |
+| Network / VNet | Secures communication between resources         |
+| Ingress / LB   | Provides external access to the application     |
++----------------+--------------------------------------------------+
+
+Notes:
+- All resources are created automatically by Terraform.
+- Environment can be fully destroyed with `terraform destroy`.
+
+-------------------
+5️- CI/CD Pipeline (GitHub Actions)
+-------------------
+
+5.1 Pipeline Setup
+- Trigger: On push or pull request to the main branch.
+- Steps:
+  1. Checkout: Pull latest code from GitHub.
+  2. Build Docker Image: Build images for each service.
+  3. Push to ACR: Upload images to Azure Container Registry.
+  4. Deploy to AKS: Update Deployment using `kubectl apply`.
+  5. Optional Tests: Run existing tests on the application.
+
+5.2 Benefits
+- Automatic deployment for any code changes.
+- Reduces human error, ensures fast updates.
+
+-------------------
+6️- Final Verification (Demo Ready)
+-------------------
+- Application fully functional in the browser.
+- All services connected: Frontend ↔ Backend ↔ Database.
+- CI/CD pipeline deploys updates automatically.
+- Azure environment ready for live demo.
+
+-------------------
+7️- Local Environment Commands (Optional)
+-------------------
+# Login to Azure
+az login
+
+# Get AKS credentials
+az aks get-credentials --resource-group <RG_NAME> --name <AKS_NAME>
+
+# Check Pods and Services
+kubectl get pods
+kubectl get svc
+
+# Update application (CI/CD runs automatically)
+git add .
+git commit -m "Update"
+git push
+
+-------------------
+8️-  Design Choices – Why AKS + ACR
+-------------------
+- AKS: Managed container orchestration with auto-scaling and high availability.
+- ACR: Centralized and secure container image storage.
+- Kubernetes Pods: Organized deployment of multiple services.
+- CI/CD: Automatic updates reduce errors and speed delivery.
+
+-------------------
+✅ Final Outcome
+-------------------
+- Voting App project is fully completed and ready for submission.
+- All Azure resources are organized and stable.
+- CI/CD pipeline works and deploys updates automatically.
+- Full documentation included, ready for demo or submission.
